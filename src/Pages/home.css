@@ -1,0 +1,27 @@
+.tela{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.tabuleiro{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 802px;
+    height: 802px;
+    position: relative;
+    border: 1px solid black;
+}
+.linha{
+    display: flex;
+    width: 800px;
+    height: 100px;
+}
+.celula{
+    display: flex;
+    width: 100px;
+    height: 100px;
+}
