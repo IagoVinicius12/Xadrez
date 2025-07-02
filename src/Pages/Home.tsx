@@ -3,6 +3,7 @@ import { JSX } from "react";
 import './home.css'
 import { Rei, Rainha, Torre, Cavalo, Peao, Bispo } from "../Components/Pecas";
 import { iniciando_mapa_ocupacao, iniciando_tabuleiro } from "../Function/Preencher";
+import { verificar_movimento_bispo } from "../Function/Movements";
 
 type Casa = {
   cor: string | null;
@@ -41,6 +42,12 @@ const handleCasa = (casa: Casa): JSX.Element | null => {
       return null;
   }
 };
+// const printar=(test:Par[])=>{
+//   for(let i=0;i<test.length;i++){
+//     console.log(test[i])
+//     console.log(test.length)
+//   }
+// }
 
 
 function Home() {
@@ -57,8 +64,16 @@ function Home() {
   const [count, setCount] = useState<number>(0)
 
   const handleFirstClick = (par: Par) => {
-    setCount(1)
     setCasa_clicada([par[0], par[1]])
+    let test:Par[]=[]
+    test=verificar_movimento_bispo(tabuleiro,par)
+    console.log(par)
+    if(test.length>=1){
+      setCount(1)
+    }
+    else{
+      setCount(0)
+    }
   }
   const handleMovement = (par1: Par, par2: Par, peca:string|null,cor:string|null): Tabuleiro => {
     let tab: Tabuleiro = tabuleiro
