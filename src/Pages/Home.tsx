@@ -13,6 +13,7 @@ const casa_vazia = { cor: null, peca: null }
 
 export type Tabuleiro = Casa[][]
 export type mapa_ocupacao = number[][]
+export type Par = [number, number]
 
 
 const preencher_tabuleiro = (): Tabuleiro => {
@@ -52,15 +53,33 @@ function Home() {
   const [mapa_ocupacao, setMapaOcupacao] = useState<mapa_ocupacao>(preencher_mapa_ocupacao)
   const celula: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
   const linha: string[] = ['1', '2', '3', '4', '5', '6', '7', '8']
+  const [casa_clicada, setCasa_clicada] = useState<Par>([0, 0])
+  const [count, setCount] = useState<number>(0)
+
+  const handleFirstClick = (par: Par) => {
+    setCount(1)
+    setCasa_clicada([par[0], par[1]])
+  }
+  const handleMovement = (par1: Par, par2: Par, peca:string|null,cor:string|null): Tabuleiro => {
+    let tab: Tabuleiro = tabuleiro
+    tab[par2[0]][par2[1]].peca = peca;
+    tab[par2[0]][par2[1]].cor = cor;
+    tab[par1[0]][par1[1]].peca = null;
+    setCasa_clicada([0,0])
+    setCount(0)
+    return tab
+  }
+
   return (
     <div className="tela">
       <div className="tabuleiro">
         {linha.map((_, i) => (
           <div className="linha" key={i}>
             {celula.map((_, j) => (
-              <div className="celula" key={`${i}-${j}`} style={{ backgroundColor: (j + i) % 2 == 0 ? 'white' : 'black' }}>
+              <div className="celula" key={`${i}-${j}`} 
+              style={{ backgroundColor: (j + i) % 2 == 0 ? 'white' : '#763821' }} 
+              onClick={count === 0 ? () => handleFirstClick([i, j]) :()=> handleMovement([casa_clicada[0], casa_clicada[1]], [i, j], tabuleiro[casa_clicada[0]][casa_clicada[1]].peca, tabuleiro[casa_clicada[0]][casa_clicada[1]].cor)}>
                 {handleCasa(tabuleiro[i][j])}
-                {mapa_ocupacao[i][j]}
               </div>
             ))}
           </div>

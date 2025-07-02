@@ -7,8 +7,8 @@ export function iniciando_tabuleiro(tabuleiro: Tabuleiro): Tabuleiro {
     tabuleiro[0][6] = { cor: 'black', peca: 'Cavalo' };
     tabuleiro[0][2] = { cor: 'black', peca: 'Bispo' };
     tabuleiro[0][5] = { cor: 'black', peca: 'Bispo' };
-    tabuleiro[0][3] = { cor: 'black', peca: 'Rei' };
-    tabuleiro[0][4] = { cor: 'black', peca: 'Rainha' };
+    tabuleiro[0][4] = { cor: 'black', peca: 'Rei' };
+    tabuleiro[0][3] = { cor: 'black', peca: 'Rainha' };
     for (let i = 0; i < 8; i++) {
         tabuleiro[1][i] = { cor: 'black', peca: 'Peao' }
         tabuleiro[6][i] = { cor: 'white', peca: 'Peao' }
@@ -19,8 +19,8 @@ export function iniciando_tabuleiro(tabuleiro: Tabuleiro): Tabuleiro {
     tabuleiro[7][6] = { cor: 'white', peca: 'Cavalo' };
     tabuleiro[7][2] = { cor: 'white', peca: 'Bispo' };
     tabuleiro[7][5] = { cor: 'white', peca: 'Bispo' };
-    tabuleiro[7][3] = { cor: 'white', peca: 'Rei' };
-    tabuleiro[7][4] = { cor: 'white', peca: 'Rainha' };
+    tabuleiro[7][4] = { cor: 'white', peca: 'Rei' };
+    tabuleiro[7][3] = { cor: 'white', peca: 'Rainha' };
 
     return tabuleiro;
 }
