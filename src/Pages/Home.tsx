@@ -4,6 +4,7 @@ import './home.css'
 import { Rei, Rainha, Torre, Cavalo, Peao, Bispo } from "../Components/Pecas";
 import { iniciando_mapa_ocupacao, iniciando_tabuleiro } from "../Function/Preencher";
 import { verificar_movimento_bispo } from "../Function/Movements";
+import { verificar_movimento_torre } from "../Function/Movimento_torre";
 
 type Casa = {
   cor: string | null;
@@ -68,7 +69,13 @@ function Home() {
   const handleFirstClick = (par: Par) => {
     if (tabuleiro[par[0]][par[1]].peca !== null) {
       setCasa_clicada([par[0], par[1]])
-      setMovimentos(verificar_movimento_bispo(tabuleiro, par))
+      console.log(tabuleiro[par[0]][par[1]].peca)
+      switch (tabuleiro[par[0]][par[1]].peca){
+        case 'Bispo':
+          setMovimentos(verificar_movimento_bispo(tabuleiro,par))
+        case 'Torre':
+          setMovimentos(verificar_movimento_torre(tabuleiro,par))
+      }
       if (movimentos.length >= 1) {
         setCount(1)
       }
