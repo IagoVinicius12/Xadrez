@@ -8,9 +8,10 @@ import { verificar_movimento_bispo } from "../Function/Movements";
 type Casa = {
   cor: string | null;
   peca: string | null;
+  peca_pode_mover: boolean | null
 }
 
-const casa_vazia = { cor: null, peca: null }
+const casa_vazia = { cor: null, peca: null, peca_pode_mover: null }
 
 export type Tabuleiro = Casa[][]
 export type mapa_ocupacao = number[][]
@@ -64,36 +65,36 @@ function Home() {
   const [count, setCount] = useState<number>(0)
 
   const handleFirstClick = (par: Par) => {
-    setCasa_clicada([par[0], par[1]])
-    let test:Par[]=[]
-    test=verificar_movimento_bispo(tabuleiro,par)
-    console.log(par)
-    if(test.length>=1){
-      setCount(1)
-    }
-    else{
-      setCount(0)
+    if (tabuleiro[par[0]][par[1]].peca !== null) {
+      setCasa_clicada([par[0], par[1]])
+      let test: Par[] = []
+      test = verificar_movimento_bispo(tabuleiro, par)
+      if (test.length >= 1) {
+        setCount(1)
+      }
+      else {
+        setCount(0)
+      }
     }
   }
-  const handleMovement = (par1: Par, par2: Par, peca:string|null,cor:string|null): Tabuleiro => {
+  const handleMovement = (par1: Par, par2: Par, peca: string | null, cor: string | null): Tabuleiro => {
     let tab: Tabuleiro = tabuleiro
     tab[par2[0]][par2[1]].peca = peca;
     tab[par2[0]][par2[1]].cor = cor;
     tab[par1[0]][par1[1]].peca = null;
-    setCasa_clicada([0,0])
+    setCasa_clicada([0, 0])
     setCount(0)
     return tab
   }
-
   return (
     <div className="tela">
       <div className="tabuleiro">
         {linha.map((_, i) => (
           <div className="linha" key={i}>
             {celula.map((_, j) => (
-              <div className="celula" key={`${i}-${j}`} 
-              style={{ backgroundColor: (j + i) % 2 == 0 ? 'white' : '#763821' }} 
-              onClick={count === 0 ? () => handleFirstClick([i, j]) :()=> handleMovement([casa_clicada[0], casa_clicada[1]], [i, j], tabuleiro[casa_clicada[0]][casa_clicada[1]].peca, tabuleiro[casa_clicada[0]][casa_clicada[1]].cor)}>
+              <div className="celula" key={`${i}-${j}`}
+                style={{ backgroundColor: (j + i) % 2 == 0 ? 'white' : '#763821' }}
+                onClick={count === 0 ? () => handleFirstClick([i, j]) : () => handleMovement([casa_clicada[0], casa_clicada[1]], [i, j], tabuleiro[casa_clicada[0]][casa_clicada[1]].peca, tabuleiro[casa_clicada[0]][casa_clicada[1]].cor)}>
                 {handleCasa(tabuleiro[i][j])}
               </div>
             ))}

@@ -8,7 +8,6 @@ export function verificar_movimento_bispo(tab:Tabuleiro, par:Par):Par[]{
     let dsd:boolean=false
     // let paraux:Par=[par[0],par[1]]
     let vetpar:Par[]=[]
-
     while(true){
         if(par[0]!==7 && par[1]!==0){
             die=true
@@ -24,12 +23,10 @@ export function verificar_movimento_bispo(tab:Tabuleiro, par:Par):Par[]{
         }
         break;
     }
-    console.log(par)
-    console.log('CC')
     while(true){
         if(die==true){
             let paraux:Par=[par[0],par[1]]
-            while(paraux[0]<=7 && paraux[1]>=0){
+            while(paraux[0]<=7 && paraux[1]>0){
                 paraux[0]=paraux[0]+1
                 paraux[1]=paraux[1]-1
                 if(tab[paraux[0]][paraux[1]].peca===null){
@@ -42,13 +39,11 @@ export function verificar_movimento_bispo(tab:Tabuleiro, par:Par):Par[]{
         }
         if(did==true){
             let paraux:Par=[par[0],par[1]]
-            while(paraux[0]<=7 && paraux[1]<=7){
+            while(paraux[0]<7 && paraux[1]<7){
                 paraux[0]=paraux[0]+1
                 paraux[1]=paraux[1]+1
                 if(tab[paraux[0]][paraux[1]].peca===null){
                     vetpar.push([paraux[0],paraux[1]])
-                    console.log([paraux[0],paraux[1]])
-                    console.log('AAA')
                 }
                 else{
                     break
@@ -57,9 +52,9 @@ export function verificar_movimento_bispo(tab:Tabuleiro, par:Par):Par[]{
         }
         if(dse==true){
             let paraux:Par=[par[0],par[1]]
-            while(paraux[0]>=0 && paraux[1]>=0){
-                paraux[0]=paraux[0]+1
-                paraux[1]=paraux[1]+1
+            while(paraux[0]>0 && paraux[1]>0){
+                paraux[0]=paraux[0]-1
+                paraux[1]=paraux[1]-1
                 if(tab[paraux[0]][paraux[1]].peca===null){
                     vetpar.push([paraux[0],paraux[1]])
                 }
@@ -70,8 +65,8 @@ export function verificar_movimento_bispo(tab:Tabuleiro, par:Par):Par[]{
         }
         if(dsd==true){
             let paraux:Par=[par[0],par[1]]
-            while(paraux[0]>=0 && paraux[1]<=7){
-                paraux[0]=paraux[0]+1
+            while(paraux[0]>0 && paraux[1]<7){
+                paraux[0]=paraux[0]-1
                 paraux[1]=paraux[1]+1
                 if(tab[paraux[0]][paraux[1]].peca===null){
                     vetpar.push([paraux[0],paraux[1]])
