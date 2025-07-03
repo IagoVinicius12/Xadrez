@@ -63,13 +63,13 @@ function Home() {
   const linha: string[] = ['1', '2', '3', '4', '5', '6', '7', '8']
   const [casa_clicada, setCasa_clicada] = useState<Par>([0, 0])
   const [count, setCount] = useState<number>(0)
+  const [movimentos,setMovimentos]=useState<Par[]>([])
 
   const handleFirstClick = (par: Par) => {
     if (tabuleiro[par[0]][par[1]].peca !== null) {
       setCasa_clicada([par[0], par[1]])
-      let test: Par[] = []
-      test = verificar_movimento_bispo(tabuleiro, par)
-      if (test.length >= 1) {
+      setMovimentos(verificar_movimento_bispo(tabuleiro, par))
+      if (movimentos.length >= 1) {
         setCount(1)
       }
       else {
@@ -78,6 +78,9 @@ function Home() {
     }
   }
   const handleMovement = (par1: Par, par2: Par, peca: string | null, cor: string | null): Tabuleiro => {
+    if(!movimentos.some(([x, y]) => x === par2[0] && y === par2[1])){
+      console.log('AAAAAAAAA')
+    }
     let tab: Tabuleiro = tabuleiro
     tab[par2[0]][par2[1]].peca = peca;
     tab[par2[0]][par2[1]].cor = cor;
