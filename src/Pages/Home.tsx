@@ -6,6 +6,9 @@ import { iniciando_mapa_ocupacao, iniciando_tabuleiro } from "../Function/Preenc
 import { verificar_movimento_bispo } from "../Function/Movimento_bispo";
 import { verificar_movimento_torre } from "../Function/Movimento_torre";
 import { verificar_movimento_peao } from "../Function/Movimento_Peão";
+import { verificar_movimento_cavalo } from "../Function/Movimento_Cavalo";
+import { verificar_movimento_rainha } from "../Function/Movimento_Rainha";
+import { verificar_movimento_rei } from "../Function/Movimento_Rei";
 
 type Casa = {
   cor: string | null;
@@ -76,10 +79,18 @@ function Home() {
         case 'Peao':
           novosMovimentos = verificar_movimento_peao(tabuleiro, par);
           break;
+        case 'Cavalo':
+          novosMovimentos=verificar_movimento_cavalo(tabuleiro,par)
+          break;
+        case 'Rainha':
+          novosMovimentos=verificar_movimento_rainha(tabuleiro,par)
+          break;
+        case 'Rei':
+          novosMovimentos=verificar_movimento_rei(tabuleiro,par)
+          break;
         default:
           novosMovimentos = [];
       }
-
       setMovimentos(novosMovimentos);
 
       if (novosMovimentos.length >= 1) {
@@ -103,6 +114,7 @@ function Home() {
       tab[par2[0]][par2[1]].peca = peca;
       tab[par2[0]][par2[1]].cor = cor;
       tab[par1[0]][par1[1]].peca = null;
+      tab[par1[0]][par1[1]].cor=null
       setCasa_clicada([0, 0])
       setCount(0)
       setTabuleiro(tab)
