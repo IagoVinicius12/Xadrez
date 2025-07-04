@@ -3,8 +3,9 @@ import { JSX } from "react";
 import './home.css'
 import { Rei, Rainha, Torre, Cavalo, Peao, Bispo } from "../Components/Pecas";
 import { iniciando_mapa_ocupacao, iniciando_tabuleiro } from "../Function/Preencher";
-import { verificar_movimento_bispo } from "../Function/Movements";
+import { verificar_movimento_bispo } from "../Function/Movimento_bispo";
 import { verificar_movimento_torre } from "../Function/Movimento_torre";
+import { verificar_movimento_peao } from "../Function/Movimento_Peão";
 
 type Casa = {
   cor: string | null;
@@ -44,13 +45,6 @@ const handleCasa = (casa: Casa): JSX.Element | null => {
       return null;
   }
 };
-// const printar=(test:Par[])=>{
-//   for(let i=0;i<test.length;i++){
-//     console.log(test[i])
-//     console.log(test.length)
-//   }
-// }
-
 
 function Home() {
 
@@ -64,37 +58,56 @@ function Home() {
   const linha: string[] = ['1', '2', '3', '4', '5', '6', '7', '8']
   const [casa_clicada, setCasa_clicada] = useState<Par>([0, 0])
   const [count, setCount] = useState<number>(0)
-  const [movimentos,setMovimentos]=useState<Par[]>([])
+  const [movimentos, setMovimentos] = useState<Par[]>([])
 
   const handleFirstClick = (par: Par) => {
     if (tabuleiro[par[0]][par[1]].peca !== null) {
-      setCasa_clicada([par[0], par[1]])
-      console.log(tabuleiro[par[0]][par[1]].peca)
-      switch (tabuleiro[par[0]][par[1]].peca){
+      setCasa_clicada([par[0], par[1]]);
+
+      let novosMovimentos: Par[] = [];
+
+      switch (tabuleiro[par[0]][par[1]].peca) {
         case 'Bispo':
-          setMovimentos(verificar_movimento_bispo(tabuleiro,par))
+          novosMovimentos = verificar_movimento_bispo(tabuleiro, par);
+          break;
         case 'Torre':
-          setMovimentos(verificar_movimento_torre(tabuleiro,par))
+          novosMovimentos = verificar_movimento_torre(tabuleiro, par);
+          break;
+        case 'Peao':
+          novosMovimentos = verificar_movimento_peao(tabuleiro, par);
+          break;
+        default:
+          novosMovimentos = [];
       }
-      if (movimentos.length >= 1) {
-        setCount(1)
-      }
-      else {
-        setCount(0)
+
+      setMovimentos(novosMovimentos);
+
+      if (novosMovimentos.length >= 1) {
+        console.log('aqui');
+        setCount(1);
+      } else {
+        console.log('count==0');
+        console.log(novosMovimentos);
+        setCount(0);
       }
     }
-  }
+  };
   const handleMovement = (par1: Par, par2: Par, peca: string | null, cor: string | null): Tabuleiro => {
-    if(!movimentos.some(([x, y]) => x === par2[0] && y === par2[1])){
+    if (!movimentos.some(([x, y]) => x === par2[0] && y === par2[1])) {
       console.log('AAAAAAAAA')
+      setCount(0)
+      return tabuleiro
     }
-    let tab: Tabuleiro = tabuleiro
-    tab[par2[0]][par2[1]].peca = peca;
-    tab[par2[0]][par2[1]].cor = cor;
-    tab[par1[0]][par1[1]].peca = null;
-    setCasa_clicada([0, 0])
-    setCount(0)
-    return tab
+    else {
+      let tab: Tabuleiro = tabuleiro
+      tab[par2[0]][par2[1]].peca = peca;
+      tab[par2[0]][par2[1]].cor = cor;
+      tab[par1[0]][par1[1]].peca = null;
+      setCasa_clicada([0, 0])
+      setCount(0)
+      setTabuleiro(tab)
+      return tab
+    }
   }
   return (
     <div className="tela">
