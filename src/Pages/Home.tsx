@@ -80,19 +80,19 @@ function Home() {
           novosMovimentos = verificar_movimento_peao(tabuleiro, par);
           break;
         case 'Cavalo':
-          novosMovimentos=verificar_movimento_cavalo(tabuleiro,par)
+          novosMovimentos = verificar_movimento_cavalo(tabuleiro, par)
           break;
         case 'Rainha':
-          novosMovimentos=verificar_movimento_rainha(tabuleiro,par)
+          novosMovimentos = verificar_movimento_rainha(tabuleiro, par)
           break;
         case 'Rei':
-          novosMovimentos=verificar_movimento_rei(tabuleiro,par)
+          novosMovimentos = verificar_movimento_rei(tabuleiro, par)
           break;
         default:
           novosMovimentos = [];
       }
       setMovimentos(novosMovimentos);
-
+      setTabuleiro(handleMudancaDeCor(tabuleiro,novosMovimentos))
       if (novosMovimentos.length >= 1) {
         console.log('aqui');
         setCount(1);
@@ -103,40 +103,59 @@ function Home() {
       }
     }
   };
-  const handleMovement = (par1: Par, par2: Par, peca: string | null, cor: string | null): Tabuleiro => {
-    if (!movimentos.some(([x, y]) => x === par2[0] && y === par2[1])) {
-      console.log('AAAAAAAAA')
-      setCount(0)
-      return tabuleiro
+  const handleCorCasa = (num1: number, num2: number): string => {
+    if ((num2 + num1) % 2 == 0) {
+      return 'white'
     }
     else {
-      let tab: Tabuleiro = tabuleiro
-      tab[par2[0]][par2[1]].peca = peca;
-      tab[par2[0]][par2[1]].cor = cor;
-      tab[par1[0]][par1[1]].peca = null;
-      tab[par1[0]][par1[1]].cor=null
-      setCasa_clicada([0, 0])
-      setCount(0)
-      setTabuleiro(tab)
-      return tab
+      return '#763821'
     }
+}
+const handleMovement = (par1: Par, par2: Par, peca: string | null, cor: string | null): Tabuleiro => {
+  if (!movimentos.some(([x, y]) => x === par2[0] && y === par2[1])) {
+    console.log('AAAAAAAAA')
+    setCount(0)
+    return tabuleiro
   }
-  return (
-    <div className="tela">
-      <div className="tabuleiro">
-        {linha.map((_, i) => (
-          <div className="linha" key={i}>
-            {celula.map((_, j) => (
-              <div className="celula" key={`${i}-${j}`}
-                style={{ backgroundColor: (j + i) % 2 == 0 ? 'white' : '#763821' }}
-                onClick={count === 0 ? () => handleFirstClick([i, j]) : () => handleMovement([casa_clicada[0], casa_clicada[1]], [i, j], tabuleiro[casa_clicada[0]][casa_clicada[1]].peca, tabuleiro[casa_clicada[0]][casa_clicada[1]].cor)}>
-                {handleCasa(tabuleiro[i][j])}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+  else {
+    let tab: Tabuleiro = tabuleiro
+    tab[par2[0]][par2[1]].peca = peca;
+    tab[par2[0]][par2[1]].cor = cor;
+    tab[par1[0]][par1[1]].peca = null;
+    tab[par1[0]][par1[1]].cor = null
+    setCasa_clicada([0, 0])
+    setCount(0)
+    setTabuleiro(handleVoltandoOriginal_Cor(tab))
+    return tab
+  }
+}
+const handleMudancaDeCor=(tab:Tabuleiro, par:Par[]): Tabuleiro=>{
+  for(let i=0;i<par.length;i++){
+    tab[par[i][0]][par[i][1]].peca_pode_mover=true
+  }
+  return tab
+}
+const handleVoltandoOriginal_Cor=(tab:Tabuleiro)=>{
+  return tab.map(linha=>linha.map(casa=>({
+    ...casa,peca_pode_mover:null
+  })))
+}
+return (
+  <div className="tela">
+    <div className="tabuleiro">
+      {linha.map((_, i) => (
+        <div className="linha" key={i}>
+          {celula.map((_, j) => (
+            <div className="celula" key={`${i}-${j}`}
+              style={{ backgroundColor: tabuleiro[i][j].peca_pode_mover ? 'green' :handleCorCasa(j, i) , border:"0.1px solid black "}}
+              onClick={count === 0 ? () => handleFirstClick([i, j]) : () => handleMovement([casa_clicada[0], casa_clicada[1]], [i, j], tabuleiro[casa_clicada[0]][casa_clicada[1]].peca, tabuleiro[casa_clicada[0]][casa_clicada[1]].cor)}>
+              {handleCasa(tabuleiro[i][j])}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
-  )
+  </div>
+)
 }
 export default Home
